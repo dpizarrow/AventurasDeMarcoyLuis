@@ -1,5 +1,7 @@
 # AventurasdeMarcosyLuis
 
+**NOTE:** This repo is a work in progress of the final project for the course "Design and Programming Methodologies"
+
 ## Logic of the program
 
 - The interface ICharacter contains the most important parameters of both Players and Enemies: HP, DEF, ATK, y el LVL. The interface also contains the getters and setters for these parameters
