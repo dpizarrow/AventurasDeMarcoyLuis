@@ -1,29 +1,20 @@
 package com.example.aventurasdemarcoyluis.model.items;
 
+import com.example.aventurasdemarcoyluis.model.players.IPlayer;
+
 /**
  * Class that represents a Red Mushroom item
  */
-public class RedMushroom implements ItemsInterface{
-
-    private final String name;
+public class RedMushroom extends AbstractItem {
 
     /**
+     * Uses a red mushroom item, this item heals the player for 10% of their maximum HP
      *
-     * @param itemName the name of the item
+     * @param aPlayer the player that uses the item
      */
-    public RedMushroom(String itemName) {
-        this.name = itemName;
-    }
 
     @Override
-    public ItemType getType() {
-        return ItemType.RedMushroom;
+    public void usedBy(IPlayer aPlayer) {
+        aPlayer.setHP((int) (aPlayer.getHP() + aPlayer.getMaxHP() * 0.1));
     }
-
-    @Override
-    public String getName() {
-        return this.name;
-    }
-
-
 }

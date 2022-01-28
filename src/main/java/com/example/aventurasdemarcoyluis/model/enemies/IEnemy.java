@@ -3,55 +3,65 @@ package com.example.aventurasdemarcoyluis.model.enemies;
 import com.example.aventurasdemarcoyluis.model.ICharacter;
 import com.example.aventurasdemarcoyluis.model.players.IPlayer;
 
+/**
+ * Interface that represents an enemy
+ */
+
 public interface IEnemy extends ICharacter {
 
     /**
      * Gets the name of the enemy
+     *
      * @return the name of the enemy
      */
 
     String getName();
 
-    /**
-     * Method when an enemy is attacked by Marco with a jump
-     * @param aPlayer the player that attacked, is only called by Marci
-     */
-
-    void attackedJumpMarco(IPlayer aPlayer);
 
     /**
-     * Method when an enemy is attacked by Marco with a Hammer
-     * @param aPlayer the player that attacked, only called by Marco
+     * The enemy gets hit with a hammer attack
+     * @param aPlayer the player that attacks the enemy
      */
 
-    void attackedHammerMarco(IPlayer aPlayer);
+    void attackedByHammer(IPlayer aPlayer);
 
     /**
-     * Method when an enemy is attacked by Luis with a jump
-     * @param aPlayer the player that attacked, only called by Luis
+     * The enemy gets hit with a jump attack
+     * @param aPlayer the player that attacks the enemy
      */
 
-    void attackedJumpLuis(IPlayer aPlayer);
+    void attackedByJump(IPlayer aPlayer);
 
     /**
-     * Method when an enemy is attacked by Luis with a Hammer
-     * @param aPlayer the player that attacked, can only be called by Luis
+     * Attacks a player
+     * Depending on the enemy type this behavior will change
+     *
+     * @param aPlayer the player to be attacked
      */
 
-    void attackedHammerLuis(IPlayer aPlayer);
+    void attackPlayer(IPlayer aPlayer);
 
     /**
-     * Attacks a Marco player
-     * @param aPlayer the player that is attacked
+     * Determines if the enemy can attack a player
+     * @param aPlayer the player to attack
+     * @return true if the enemy can attack the player
      */
 
-    void attackMarco(IPlayer aPlayer);
+    boolean canAttackPlayer(IPlayer aPlayer);
 
     /**
-     * Attacks a Luis playuer
-     * @param aPlayer the player that is attacked
+     * Determines if the enemy can be attacked by Marco
+     * @return true if the enemy can be attacked by Marco
      */
 
-    void attackLuis(IPlayer aPlayer);
+    boolean canBeAttackedByMarco();
+
+
+    /**
+     * Determines if the enemy can be attacked by Luis
+     * @return true if the enemy can be attacked by Luis
+     */
+
+    boolean canBeAttackedByLuis();
 
 }

@@ -1,4 +1,4 @@
-import com.example.aventurasdemarcoyluis.model.*;
+
 import com.example.aventurasdemarcoyluis.model.enemies.Boo;
 import com.example.aventurasdemarcoyluis.model.enemies.Goomba;
 import com.example.aventurasdemarcoyluis.model.enemies.Spiny;
@@ -19,11 +19,13 @@ public class TestPlayers {
 
     @BeforeEach
     public void setUp() {
-        MarcoTest = new Marco("Marco",100, 100, 100, 2, 1, 10, 100);
-        LuisTest = new Luis("Luis",50, 50, 20, 6, 5, 7, 110);
+        MarcoTest = new Marco("Marco",100, 100, 100, 2, 50, 100, 100);
+        LuisTest = new Luis("Luis",50, 50, 20, 6, 10, 12, 110);
         goombaTest = new Goomba("Goomba",2,4,15,8);
         booTest = new Boo("Boo",50, 3, 10, 5);
         spinyTest = new Spiny("Spiny", 30, 10, 10, 5);
+        MarcoTest.setSeed(1);
+        LuisTest.setSeed(1);
     }
 
     @Test
@@ -33,66 +35,61 @@ public class TestPlayers {
     }
 
     @Test
-    public void addItemTest() {
-        RedMushroom redMushroomTest = new RedMushroom("Red Mushroom");
-        HoneySyrup honeySyrupTest = new HoneySyrup("Honey Syrup");
-        MarcoTest.addAItem(redMushroomTest);
-        MarcoTest.addAItem(honeySyrupTest);
-        LuisTest.addAItem(honeySyrupTest);
-        assertEquals(MarcoTest.armamento.toArray().length, 2);
-        assertEquals(LuisTest.armamento.toArray().length, 1);
-    }
-    @Test
     public void setHPTest() {
         MarcoTest.setHP(150);
         assertEquals(MarcoTest.getHP(), 100);
     }
 
     @Test
+    public void setIncorrectFPTest() {
+        MarcoTest.setFp(-10);
+        LuisTest.setFp(-30);
+        assertEquals(0, MarcoTest.getFp());
+        assertEquals(0, LuisTest.getFp());
+    }
+
+    @Test
     public void getMaxFPTest() {
-        assertEquals(MarcoTest.getMaxFP(), 10);
-        assertEquals(LuisTest.getMaxFP(), 7);
+        assertEquals(MarcoTest.getMaxFP(), 100);
+        assertEquals(LuisTest.getMaxFP(), 12);
+    }
+
+    @Test
+    public void setMaxHPTest() {
+        MarcoTest.setMaxHP(150);
+        LuisTest.setMaxHP(150);
+        assertEquals(150, MarcoTest.getMaxHP());
+        assertEquals(150, LuisTest.getMaxHP());
+    }
+
+    @Test
+    public void setMaxFPTest() {
+        MarcoTest.setMaxFP(30);
+        LuisTest.setMaxFP(30);
+        assertEquals(30, MarcoTest.getMaxFP());
+        assertEquals(30, LuisTest.getMaxFP());
     }
 
     @Test
     public void useRedMushroomTest() {
-        RedMushroom redMushroomTest = new RedMushroom("Red Mushroom");
+        RedMushroom redMushroomTest = new RedMushroom();
         MarcoTest.setHP(70);
         LuisTest.setHP(100);
-        MarcoTest.addAItem(redMushroomTest);
-        LuisTest.addAItem(redMushroomTest);
-        MarcoTest.useRedMushroom(redMushroomTest);
-        LuisTest.useRedMushroom(redMushroomTest);
+        MarcoTest.useItem(redMushroomTest);
+        LuisTest.useItem(redMushroomTest);
         assertEquals(MarcoTest.getHP(), 80);
         assertEquals(LuisTest.getHP(), 110);
-        assertEquals(MarcoTest.armamento.toArray().length, 0);
-        assertEquals(LuisTest.armamento.toArray().length, 0);
     }
 
     @Test
     public void useHoneySyrupTest() {
-        HoneySyrup honeySyrupTest = new HoneySyrup("Honey Syrup");
-        MarcoTest.addAItem(honeySyrupTest);
-        LuisTest.addAItem(honeySyrupTest);
-        MarcoTest.useHoneySyrup(honeySyrupTest);
-        LuisTest.useHoneySyrup(honeySyrupTest);
-        assertEquals(MarcoTest.getFp(), 4);
-        assertEquals(LuisTest.getFp(), 7);
-        assertEquals(MarcoTest.armamento.toArray().length, 0);
-        assertEquals(LuisTest.armamento.toArray().length, 0);
-
+        HoneySyrup honeySyrupTest = new HoneySyrup();
+        MarcoTest.useItem(honeySyrupTest);
+        LuisTest.useItem(honeySyrupTest);
+        assertEquals(MarcoTest.getFp(), 53);
+        assertEquals(LuisTest.getFp(), 12);
     }
 
-    @Test
-    public void useStarTest() {
-        Star starTest = new Star("Star");
-        MarcoTest.addAItem(starTest);
-        LuisTest.addAItem(starTest);
-        MarcoTest.useStar(starTest);
-        LuisTest.useStar(starTest);
-        assertEquals(MarcoTest.getMaxHP(), 100);
-        assertEquals(LuisTest.getMaxHP(), 110);
-    }
 
     @Test
     public void knockoutTest() {
@@ -120,29 +117,66 @@ public class TestPlayers {
     }
 
     @Test
-    public void attackSaltoTest() {
+    public void failAttackTest() {
         MarcoTest.setHP(0);
         LuisTest.setHP(0);
-        MarcoTest.attackGoomba(AttackType.SALTO, goombaTest);
-        MarcoTest.attackBoo(AttackType.SALTO, booTest);
-        MarcoTest.attackSpiny(AttackType.SALTO, spinyTest);
-        LuisTest.attackGoomba(AttackType.SALTO, goombaTest);
-        LuisTest.attackBoo(AttackType.SALTO, booTest);
+        MarcoTest.jumpAttack(goombaTest);
+        MarcoTest.jumpAttack(spinyTest);
+        MarcoTest.jumpAttack(booTest);
+        LuisTest.jumpAttack(goombaTest);
+        LuisTest.jumpAttack(booTest);
+        LuisTest.jumpAttack(spinyTest);
         assertEquals(goombaTest.getHP(), 2);
         assertEquals(booTest.getHP(), 50);
         assertEquals(spinyTest.getHP(), 30);
     }
+
     @Test
-    public void attackMartiloTest() {
-        MarcoTest.setHP(0);
-        LuisTest.setHP(0);
-        MarcoTest.attackGoomba(AttackType.MARTILLO, goombaTest);
-        MarcoTest.attackBoo(AttackType.MARTILLO, booTest);
-        MarcoTest.attackSpiny(AttackType.MARTILLO, spinyTest);
-        LuisTest.attackGoomba(AttackType.MARTILLO, goombaTest);
-        LuisTest.attackBoo(AttackType.MARTILLO, booTest);
-        assertEquals(goombaTest.getHP(), 2);
-        assertEquals(booTest.getHP(), 50);
-        assertEquals(spinyTest.getHP(), 30);
+    public void marcoJumpAttackTest() {
+        MarcoTest.jumpAttack(goombaTest);
+        MarcoTest.jumpAttack(spinyTest);
+        MarcoTest.jumpAttack(booTest);
+        assertEquals(0, goombaTest.getHP());
+        assertEquals(30, spinyTest.getHP());
+        assertEquals(95, MarcoTest.getHP());
+        assertEquals(30, booTest.getHP());
     }
+
+    @Test
+    public void luisJumpAttackTest() {
+        LuisTest.jumpAttack(goombaTest);
+        LuisTest.jumpAttack(spinyTest);
+        LuisTest.jumpAttack(booTest);
+        assertEquals(0, goombaTest.getHP());
+        assertEquals(50, booTest.getHP());
+        assertEquals(30, spinyTest.getHP());
+        assertEquals(48, LuisTest.getHP());
+    }
+
+    @Test
+    public void marcoHammerAttackTest() {
+        MarcoTest.hammerAttack(goombaTest);
+        MarcoTest.hammerAttack(spinyTest);
+        assertEquals(0, goombaTest.getHP());
+        assertEquals(30, spinyTest.getHP());
+        MarcoTest.hammerAttack(spinyTest);
+        assertEquals(0, spinyTest.getHP());
+        MarcoTest.hammerAttack(booTest);
+        assertEquals(20, booTest.getHP());
+        assertEquals(44, MarcoTest.getFp());
+    }
+
+    @Test
+    public void luisHammerAttackTest() {
+        LuisTest.hammerAttack(goombaTest);
+        LuisTest.hammerAttack(spinyTest);
+        assertEquals(0, goombaTest.getHP());
+        assertEquals(30, spinyTest.getHP());
+        LuisTest.hammerAttack(booTest);
+        assertEquals(50, booTest.getHP());
+        LuisTest.hammerAttack(spinyTest);
+        assertEquals(0, spinyTest.getHP());
+    }
+
+
 }

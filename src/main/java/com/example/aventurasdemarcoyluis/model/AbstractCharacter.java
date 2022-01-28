@@ -11,8 +11,7 @@ public abstract class AbstractCharacter implements ICharacter {
     protected int LVL;
 
     /**
-     *
-     * @param hp the health points of the player or enemy
+     * @param hp  the health points of the player or enemy
      * @param atk the attack points of the player or enemy
      * @param def the defense points of the player or enemy
      * @param lvl the level of the player or enemy
@@ -31,7 +30,7 @@ public abstract class AbstractCharacter implements ICharacter {
 
     @Override
     public void setHP(int hp) {
-        this.HP = hp;
+        this.HP = Math.max(hp, 0);
     }
 
 
@@ -75,4 +74,33 @@ public abstract class AbstractCharacter implements ICharacter {
         return this.getHP() <= 0;
     }
 
+    /**
+     * Checks if the character is a Marco
+     *
+     * @return true if the character is Marco
+     */
+    @Override
+    public boolean isMarco() {
+        return false;
+    }
+
+    /**
+     * Checks if the character is a Luis
+     *
+     * @return true if the character is Luis
+     */
+    @Override
+    public boolean isLuis() {
+        return false;
+    }
+
+    /**
+     * Checks if the character is a Boo
+     *
+     * @return true if the character is a Boo
+     */
+    @Override
+    public boolean isBoo() {
+        return false;
+    }
 }

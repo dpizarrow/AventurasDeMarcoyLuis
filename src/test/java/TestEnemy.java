@@ -1,5 +1,4 @@
 
-import com.example.aventurasdemarcoyluis.model.*;
 import com.example.aventurasdemarcoyluis.model.enemies.Boo;
 import com.example.aventurasdemarcoyluis.model.enemies.Goomba;
 import com.example.aventurasdemarcoyluis.model.enemies.Spiny;
@@ -20,8 +19,8 @@ public class TestEnemy {
 
     @BeforeEach
     public void setUp() {
-        MarcoTest = new Marco("Marco",0, 100, 100, 2, 1, 10, 100);
-        LuisTest = new Luis("Luis",0, 50, 20, 6, 5, 7, 110);
+        MarcoTest = new Marco("Marco",100, 100, 10, 2, 1, 10, 100);
+        LuisTest = new Luis("Luis",30, 50, 20, 6, 5, 7, 110);
         goombaTest = new Goomba("Goomba",2,4,15,8);
         booTest = new Boo("Boo",50, 3, 10, 5);
         spinyTest = new Spiny("Spiny", 30, 10, 10, 5);
@@ -54,45 +53,56 @@ public class TestEnemy {
     }
 
     @Test
-    public void MarcoHammerAttackTest() {
-        goombaTest.attackedByMarco(AttackType.MARTILLO, MarcoTest);
-        booTest.attackedByMarco(AttackType.MARTILLO, MarcoTest);
-        spinyTest.attackedByMarco(AttackType.MARTILLO, MarcoTest);
-        assertEquals(goombaTest.getHP(), 2);
-        assertEquals(booTest.getHP(), 50);
-        assertEquals(spinyTest.getHP(), 30);
+    public void isKOTest() {
+        assertFalse(goombaTest.isKO());
+        assertFalse(booTest.isKO());
+        assertFalse(spinyTest.isKO());
     }
 
     @Test
-    public void MarcoJumpAttackTest() {
-        goombaTest.attackedByMarco(AttackType.SALTO, MarcoTest);
-        booTest.attackedByMarco(AttackType.SALTO, MarcoTest);
-        spinyTest.attackedByMarco(AttackType.SALTO, MarcoTest);
-        assertEquals(goombaTest.getHP(), 2);
-        assertEquals(booTest.getHP(), 50);
-        assertEquals(spinyTest.getHP(), 30);
+    public void attackFailTest() {
+        goombaTest.setHP(0);
+        spinyTest.setHP(0);
+        booTest.setHP(0);
+        goombaTest.attackPlayer(LuisTest);
+        goombaTest.attackPlayer(MarcoTest);
+        assertEquals(100, MarcoTest.getHP());
+        assertEquals(30, LuisTest.getHP());
+        assertEquals(100, MarcoTest.getHP());
+        assertEquals(30, LuisTest.getHP());
+        assertEquals(100, MarcoTest.getHP());
+        assertEquals(30, LuisTest.getHP());
     }
 
     @Test
-    public void LuisHammerAttackTest() {
-        goombaTest.attackedByLuis(AttackType.MARTILLO, LuisTest);
-        booTest.attackedByLuis(AttackType.MARTILLO, LuisTest);
-        assertEquals(goombaTest.getHP(), 2);
-        assertEquals(booTest.getHP(), 50);
+    public void goombaAttackTest() {
+        goombaTest.attackPlayer(MarcoTest);
+        goombaTest.attackPlayer(LuisTest);
+        assertEquals(98, MarcoTest.getHP());
+        assertEquals(29, LuisTest.getHP());
     }
 
     @Test
-    public void LuisJumpAttackTest() {
-        goombaTest.attackedByLuis(AttackType.SALTO, LuisTest);
-        booTest.attackedByLuis(AttackType.SALTO, LuisTest);
-        assertEquals(goombaTest.getHP(), 2);
-        assertEquals(booTest.getHP(), 50);
+    public void spinyAttackTest() {
+        spinyTest.attackPlayer(MarcoTest);
+        spinyTest.attackPlayer(LuisTest);
+        assertEquals(97, MarcoTest.getHP());
+        assertEquals(29, LuisTest.getHP());
     }
 
     @Test
-    public void equalsTest() {
-        assertFalse(goombaTest.equals(spinyTest));
-        assertFalse(booTest.equals(goombaTest));
+    public void booAttackTest() {
+        booTest.attackPlayer(MarcoTest);
+        booTest.attackPlayer(LuisTest);
+        assertEquals(100, MarcoTest.getHP());
+        assertEquals(30, LuisTest.getHP());
+    }
+
+    @Test
+    public void isEnemyTest() {
+        assertTrue(booTest.isEnemy());
+        assertTrue(goombaTest.isEnemy());
+        assertTrue(spinyTest.isEnemy());
     }
 
 }
